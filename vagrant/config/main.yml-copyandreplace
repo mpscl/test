@@ -1,0 +1,48 @@
+# Your personal GitHub token comentado mientras tanto
+# github_token: 2c029dd289eb282cfa060383d401d88d232e9f90
+# Read more: https://github.com/blog/1509-personal-api-tokens
+# You can generate it here: https://github.com/settings/tokens
+
+vagrant_api_version: 2
+# Guest OS timezone
+timezone: Europe/Madrid
+
+#name hostname
+hostname: prueba.local
+
+# Are we need check box updates for every 'vagrant up'?
+box_check_update: true
+
+# Virtual machine box
+box: bento/centos-7
+box_version: 202008.16.0
+
+# Virtual machine name
+machine_name: prueba.local
+
+# Virtual machine network
+network: private_network
+
+# Virtual machine IP
+ip: 192.168.1.222
+#ip: 192.168.3.224
+
+# Virtual machine path directory sincronized
+synced_folder: ../core/
+
+# Virtual machine path directory where begin sincronized
+vm_synced_folder: /var/www/html/
+
+server_web_dir: /var/www/html/public/
+
+# Virtual machine CPU cores number
+cpus: 2
+
+# Virtual machine RAM
+memory: 2048
+
+owner: vagrant
+
+#group: www-data
+
+#mount_options: dmode=775,fmode=664

@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+require 'fileutils'
+
+confDir = File.expand_path(File.dirname(__FILE__))
+config = {
+  local: confDir + '/config/main.yml'
+}
+
+required_plugins = %w( vagrant-vbguest vagrant-env vagrant-hostsupdater )
+plugin_installed = false
+required_plugins.each do |plugin|
+  unless Vagrant.has_plugin?(plugin)
+    system "vagrant plugin install #{plugin}"
+    plugin_installed = true
+  end
+end
+
+# If any new plugins are installed, restart Vagrant process
+if plugin_installed === true
+  exec "vagrant #{ARGV.join' '}"
+end
+
+options = YAML.load_file config[:local]
+Vagrant.configure(options['vagrant_api_version']) do |config|
+
+	config.vm.provider "virtualbox" do |vb|
+	    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+		# machine cpus count
+		vb.cpus = options['cpus']
+		# machine memory size
+		vb.memory = options['memory']
+	end
+
+  #config.vm.box_check_update = options['box_check_update']
+
+  config.vm.box = options['box']
+  #config.vm.box_version = options['box_version']
+  config.vm.hostname = options['hostname']
+  config.vm.network options['network'], ip: options['ip']
+  config.vm.synced_folder options['synced_folder'], options['vm_synced_folder'], type: "virtualbox", owner: options['owner'], create: true
+
+  config.vm.provider "virtualbox" do |vb|
+      vb.name = options['machine_name']
+  end
+  config.vm.define options['machine_name']
+  config.vbguest.auto_update = false
+
+  config.vm.provision :hostmanager
+  config.hostmanager.enabled            = true
+  config.hostmanager.manage_host        = true
+  config.hostmanager.ignore_private_ip  = false
+  config.hostmanager.include_offline    = true
+
+  # provisioners
+  # Ejecucion de Scripts
+  config.vm.provision 'shell', path: 'scripts/bootstrap.sh', args: "#{options['server_web_dir']} #{options['hostname']}"
+end

@@ -1,0 +1,10 @@
+12.idea/
+.idea/
+vagrant/.vagrant
+core/xdebug.log
+vagrant/config/main.yml
+core/bin/.phpunit/
+.DS_Store
+-test.txt
+core/bin/.phpunit/
+test.txt
