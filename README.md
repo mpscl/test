@@ -13,5 +13,5 @@ Se puede usar el modelo main.yml-copyandreplace
 
 luego desde la carpeta vagrant usar vagrant up
 
-El endpoint creado esta sobre /v1/get-data/v1/get-data?tag=xxx, el parametro tag es el parametro de busqueda sobre la web.
+El endpoint creado esta sobre /v1/get-data?tag=xxx, el parametro tag es el parametro de busqueda sobre la web.
 
